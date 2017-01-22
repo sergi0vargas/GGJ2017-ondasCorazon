@@ -19,6 +19,9 @@ public class GameController : MonoBehaviour {
     /*GameLoop*/
 
     /*UI*/
+    public RectTransform menu;
+    public Text finalText;
+
     public Text timerSprite;
     public int timer = 30;
     float timerCorazon = 0, timerTemporizador = 0;
@@ -32,11 +35,12 @@ public class GameController : MonoBehaviour {
     /*UI*/
     
     void Start () {
-
+        finalText.text = "You Lose!";
         maxX = Screen.width;
         maxY = Screen.height;
         GetComponent<Camera>().orthographicSize = Screen.width / 4;
         GetComponent<Camera>().transform.position = new Vector3(Screen.width / 2, Screen.height / 2,-10);
+        menu.gameObject.SetActive(false);
     }
 	
 	void Update () {
@@ -68,6 +72,7 @@ public class GameController : MonoBehaviour {
                 }
                 else
                 {
+                    finalText.text = "You Lose!";
                     Time.timeScale = 0;
                     DestroyAllWaves();
                 }
@@ -79,6 +84,10 @@ public class GameController : MonoBehaviour {
         { 
             if (timer == 0)
             {
+                if (vidaTotal >= 0.5f)
+                {
+                    finalText.text = "You Win!!!";
+                }
                 Time.timeScale = 0;
                 DestroyAllWaves();
             }
@@ -177,6 +186,7 @@ public class GameController : MonoBehaviour {
 
     void DestroyAllWaves()
     {
+        menu.gameObject.SetActive(true);
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Waves");
 
         for (var i = 0; i < gameObjects.Length; i++)
@@ -191,6 +201,7 @@ public class GameController : MonoBehaviour {
     }
     public void Restart()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("game");
     }
 }
